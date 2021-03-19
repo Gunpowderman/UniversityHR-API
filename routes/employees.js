@@ -6,20 +6,20 @@ const router = express.Router();
 const {
   employeeCreate,
   employeeList,
-  cookieUpdate,
-  cookieDelete,
-} = require("../controllers/cookieController");
+  employeeUpdate,
+  employeeDelete,
+} = require("../controllers/employeeController");
 
 //show list
 router.get("/", employeeList);
 
-//delete cookies
-router.delete("/:cookieId", cookieDelete);
+//delete employee
+router.delete("/:employeeId", employeeDelete);
 
-//create cookie
+//create employee
 router.post("/", employeeCreate);
 
-//update cookie
-router.put("/:cookieId", cookieUpdate);
+//update employee
+router.put("/:employeeId", employeeUpdate);
 
 module.exports = router;

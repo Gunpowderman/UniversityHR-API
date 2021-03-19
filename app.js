@@ -4,14 +4,18 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 
 //import
-const cookieRoutes = require("./routes/cookies");
+const employeesRoutes = require("./routes/employees");
+const departmentsRoutes = require("./routes/departments");
+const jobsRoutes = require("./routes/jobs");
 const db = require("./db/models");
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use("/cookies", cookieRoutes);
+app.use("/employee", employeesRoutes);
+app.use("/department", departmentsRoutes);
+app.use("/job", jobsRoutes);
 
 const run = async () => {
   try {
