@@ -56,6 +56,16 @@ db.Employee.belongsTo(db.Department, {
   foreignKey: "departmentId",
 });
 
-db.Employee.belongsToMany(db.Job, { through: "EmployeeTitle" });
+db.Employee.belongsToMany(db.Job, {
+  through: "EmployeeTitle",
+  as: "job",
+  foreignKey: "jobId",
+});
+
+db.Job.belongsToMany(db.Employee, {
+  through: "EmployeeTitle",
+  as: "employee",
+  foreignKey: "employeeId",
+});
 
 module.exports = db;

@@ -4,7 +4,7 @@ const { Department } = require("../db/models");
 const { Job } = require("../db/models");
 
 //employee list
-exports.employeeList = async (req, res) => {
+exports.employeeList = async (_, res) => {
   try {
     const employees = await Employee.findAll({
       attributes: { exclude: ["createdAt", "updatedAt"] },
@@ -12,12 +12,13 @@ exports.employeeList = async (req, res) => {
         {
           model: Department,
           as: "department",
-          attributes: ["name", "phoneNumber"],
+          attributes: { exclude: ["createdAt", "updatedAt"] },
         },
         {
           model: Job,
           as: "job",
           attributes: { exclude: ["createdAt", "updatedAt"] },
+          through: { attributes: [] },
         },
       ],
     });
@@ -31,6 +32,10 @@ exports.employeeList = async (req, res) => {
 exports.employeeCreate = async (req, res) => {
   try {
     const newEmployee = await Employee.create(req.body);
+    await req.body.jobId.forEach(async (id) => {
+      const job = await Job.findByPk(id);
+      newEmployee.addJob(job);
+    });
     res.status(201).json(newEmployee);
   } catch (error) {
     res.status(500).json({ message: error.message });

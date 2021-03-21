@@ -1,4 +1,6 @@
 //import our database
+const { Employee } = require("../db/models");
+const { Department } = require("../db/models");
 const { Job } = require("../db/models");
 
 //job list
@@ -6,6 +8,19 @@ exports.jobList = async (req, res) => {
   try {
     const jobs = await Job.findAll({
       attributes: { exclude: ["createdAt", "updatedAt"] },
+      include: [
+        {
+          model: Employee,
+          as: "employee",
+          attributes: { exclude: ["createdAt", "updatedAt"] },
+          through: { attributes: [] },
+        },
+        {
+          model: Department,
+          as: "department",
+          attributes: { exclude: ["createdAt", "updatedAt"] },
+        },
+      ],
     });
     res.json(jobs);
   } catch (error) {
